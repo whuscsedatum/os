@@ -1,7 +1,9 @@
 \chapter*{总复习：高频辨析与做题模板}
+\phantomsection
 \addcontentsline{toc}{chapter}{总复习：高频辨析与做题模板}
 
 \section*{一、概念定位模板}
+\phantomsection
 \addcontentsline{toc}{section}{一、概念定位模板}
 \begin{points}
   \item 问 CPU 给谁用：进程调度。
@@ -16,17 +18,23 @@
 \end{points}
 
 \section*{二、地址转换题模板}
+\phantomsection
 \addcontentsline{toc}{section}{二、地址转换题模板}
 \begin{points}
   \item 看页大小/段大小，确定偏移位数或偏移范围。
   \item 把逻辑地址拆成页号/段号和偏移。
   \item 查页表/段表，判断是否越界或缺页。
   \item 拼物理地址：页式为物理块号 + 页内偏移；段式为段基址 + 段内偏移。
+  \item 请求分页题若页不在内存：写出“缺页中断 -> 调页 -> 改页表/TLB -> 重执行指令”。
+  \item 段页式题按顺序写：拆段号/页号/页内偏移 -> 查段表 -> 查页表 -> 拼物理地址。
 \end{points}
 
 \section*{三、PV 题模板}
+\phantomsection
 \addcontentsline{toc}{section}{三、PV 题模板}
 \begin{points}
+  \item 先判断题目里的关系到底是互斥还是同步：互斥围绕“同一时刻只能一个进”，同步围绕“必须先后发生”。
+  \item 信号量初值先看资源数量或先行条件：互斥量常设为 1；`empty` 初值常等于空缓冲区个数；`full` 初值常为 0。
   \item 找共享资源：需要 mutex 互斥。
   \item 找先后关系：先发生的一方 V，后发生的一方 P。
   \item 找数量约束：空缓冲区用 empty，满缓冲区用 full，资源个数就是信号量初值。
@@ -35,36 +43,85 @@
 \end{points}
 
 \section*{四、调度题模板}
+\phantomsection
 \addcontentsline{toc}{section}{四、调度题模板}
 \begin{points}
   \item 列表：进程、到达时间、服务时间、优先级/队列。
   \item 找调度点：到达、完成、时间片到、阻塞、抢占、优先级调整。
+  \item 多级反馈队列题先定规则：新进程先入哪一级、各级时间片是多少、用完时间片是否降级、阻塞返回后是否保级或升级。
   \item 画甘特图。
   \item 算完成时间、周转时间、等待时间、带权周转时间。
   \item 抢占式算法每个新进程到达都要判断是否抢占。
 \end{points}
 
-\section*{五、页面置换题模板}
-\addcontentsline{toc}{section}{五、页面置换题模板}
+\section*{五、进程/线程代码题模板}
+\phantomsection
+\addcontentsline{toc}{section}{五、进程/线程代码题模板}
 \begin{points}
+  \item 先认清题目里各个系统调用的角色：\code{fork()} 负责分叉执行流，\code{exec()} 负责替换程序映像，\code{wait()} / \code{pthread\_join()} 负责等待同步，\code{getpid()} 常用来判断当前是谁在输出。
+  \item 先标清创建点：\code{fork()} 会把执行流一分为二；\code{pthread\_create()} 会新增一个线程执行线程函数。
+  \item 对每个创建点分别写返回值和身份：父进程中 \code{fork()} 返回子进程 PID，子进程中返回 0；线程题要看传参和线程函数入口。
+  \item 统计执行次数时，不要只数 `fork()`/线程创建语句本身，要看创建后哪些后续语句会被多少个执行流继续执行。
+  \item 判断共享关系：进程题里普通变量通常各改各的副本；线程题里同一进程的全局变量、堆区对象通常共享。
+  \item 遇到 \code{exec()} 要立刻切断旧程序后续路径：成功后原程序映像被替换，\code{exec()} 后面的旧代码通常不再执行。
+  \item 遇到 \code{wait()} / \code{pthread\_join()} 要判断谁会阻塞、谁先结束，以及它只约束同步关系，不一定唯一决定所有输出顺序。
+\end{points}
+
+\section*{六、页面置换题模板}
+\phantomsection
+\addcontentsline{toc}{section}{六、页面置换题模板}
+\begin{points}
+  \item 先分清是“页面置换算法题”还是“页面分配/替换策略题”：前者问 FIFO/LRU/Clock 怎么换，后者问固定/可变分配、局部/全局置换怎么配。
   \item 初始化页框为空，按引用串逐个访问。
   \item 命中：不计缺页，但更新 LRU/Clock 等状态。
   \item 缺页：若有空页框直接装入；否则按算法选牺牲页。
   \item 记录每一步页框内容和缺页次数。
   \item 判断 Belady：只针对 FIFO 这类算法可能出现，不要泛化到 LRU/OPT。
+  \item EAT 题先分路径：TLB 命中、TLB 未命中但页在内存、缺页三种情况，再做概率加权。
+  \item 工作集/抖动题抓因果链：页框不足 -> 缺页率高 -> 频繁换页 -> CPU 利用率下降。
+  \item 策略题记住组合关系：固定分配通常配局部置换；可变分配可配局部置换或全局置换。
 \end{points}
 
-\section*{六、文件系统计算题模板}
-\addcontentsline{toc}{section}{六、文件系统计算题模板}
+\section*{七、银行家/死锁检测题模板}
+\phantomsection
+\addcontentsline{toc}{section}{七、银行家/死锁检测题模板}
+\begin{points}
+  \item 先看题目到底问“避免”还是“检测”：银行家算法管请求后是否仍安全；死锁检测是判断当前是否已死锁。
+  \item 银行家算法处理请求顺序固定：先检查 `Request <= Need`，再检查 `Request <= Available`，都通过后才试分配。
+  \item 试分配后做安全性检查：写出 `Work/Finish` 或等价过程；若安全，必须给出一条安全序列，不能只写“安全”。
+  \item 死锁检测题也要写可推进过程：谁能先满足、释放后可用资源怎么变、最后哪些进程始终无法推进。
+  \item 若题目问“哪些进程死锁”，答案必须落到具体进程集合，不能只说“存在死锁”。
+  \item 资源很多时不要硬画资源分配图；表格或向量过程通常更稳，也更符合阅卷点。
+\end{points}
+
+\section*{八、文件系统计算题模板}
+\phantomsection
+\addcontentsline{toc}{section}{八、文件系统计算题模板}
 \begin{points}
   \item 目录检索题：先算每块可放多少目录项，再算平均需要扫描多少块。
   \item 索引最大文件题：先算每个索引块可放多少块号，再根据索引级数求可寻址数据块数。
   \item 链式分配随机访问题：访问第 $k$ 块通常要从头顺链访问到第 $k$ 块。
   \item 连续分配题：直接定位强，但增长和外部碎片是弱点。
+  \item inode 目录题：若目录项只存“文件名 + inode 号”，目录块变小，通常要再加一次 inode 访问。
+  \item 混合索引题：分别算直接地址、一级间接、二级间接、三级间接的寻址范围，再求和。
+  \item FAT 空间题：先算总块数，再算块号至少需要多少位，最后乘每表项大小。
 \end{points}
 
-\section*{七、最后一遍背诵关键词}
-\addcontentsline{toc}{section}{七、最后一遍背诵关键词}
+\section*{九、设备与磁盘题模板}
+\phantomsection
+\addcontentsline{toc}{section}{九、设备与磁盘题模板}
+\begin{points}
+  \item 磁盘访问时间题：总时间通常拆成寻道时间 + 旋转延迟 + 传输时间，必要时再加控制器开销。
+  \item 磁盘调度题：先写当前磁头位置与移动方向，再按算法逐步给出访问顺序和总移动磁道数。
+  \item SCAN/C-SCAN/LOOK/C-LOOK 题先确认老师采用的定义：是否走到磁道尽头，还是只走到最远请求。
+  \item 缓冲题先画三段：设备输入 $T$、系统传送 $M$、进程计算 $C$，再判断哪些能重叠。
+  \item DMA/通道题抓 CPU 参与程度：轮询最高，中断次之，DMA 更低，通道最强。
+  \item SPOOLing 题一定写“输入井/输出井 + 后台进程 + 井管理程序 + 把独占设备虚拟成共享设备”。
+\end{points}
+
+\section*{十、最后一遍背诵关键词}
+\phantomsection
+\addcontentsline{toc}{section}{十、最后一遍背诵关键词}
 \begin{multicols}{2}
 \begin{points}
   \item OS：资源管理器、控制程序、接口。
@@ -73,16 +130,23 @@
   \item 进程：程序一次执行，PCB 是唯一标志。
   \item 线程：CPU 调度基本单位，共享进程资源。
   \item 调度：高级进系统，中级进内存，低级上 CPU。
+  \item 多级反馈队列：优先照顾新作业和交互作业，时间片逐级变大，用完时间片常降级。
   \item 临界区：空闲让进、忙则等待、有限等待、让权等待。
   \item 信号量：P 先减，V 先加。
+  \item PV：互斥看共享资源，同步看先后关系，初值看资源数和先行条件。
   \item 死锁：互斥、请求保持、不可剥夺、循环等待。
+  \item 进程通信：共享存储、消息传递、管道。
+  \item 互斥软件/硬件：Peterson、Dekker、关中断、Test-and-Set/Swap。
+  \item 管程：封装共享数据与操作，入口互斥，条件变量管同步。
   \item 分页：逻辑连续、物理离散、页表映射。
   \item 分段：按逻辑结构，便于共享保护。
-  \item 虚存：局部性、请求调入、页面置换。
+  \item 伙伴系统：按 $2^k$ 块分裂与合并，伙伴地址会算。
+  \item 虚存：局部性、请求调入、页面置换、工作集。
   \item 抖动：缺页太多，系统忙于换页。
-  \item 文件：命名信息项序列，目录用于检索。
-  \item inode：文件元数据和块指针。
-  \item 磁盘：寻道 + 旋转延迟 + 传输。
-  \item I/O：DMA、通道、缓冲、SPOOLing。
+  \item 文件：命名信息项；目录检索；FCB/inode 存元数据。
+  \item inode：文件元数据和块指针，目录项常存文件名 + inode 号。
+  \item 磁盘：寻道 + 旋转延迟 + 传输，调度目标常是尽量减小寻道。
+  \item RAID：0 提速无冗余，1 镜像，5 分布式校验，6 双校验。
+  \item I/O：轮询、中断、DMA、通道、缓冲、SPOOLing、设备独立性。
 \end{points}
 \end{multicols}
