@@ -1,0 +1,67 @@
+
+\documentclass[UTF8,openany,zihao=-4]{ctexbook}
+\usepackage[a4paper,top=1.45cm,bottom=1.45cm,left=1.35cm,right=1.35cm,headsep=0.25cm,footskip=0.65cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{booktabs,longtable,array,tabularx,multicol}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{titlesec}
+\hypersetup{colorlinks=true,linkcolor=black,urlcolor=black,citecolor=black}
+\setlength{\parindent}{0em}
+\setlength{\parskip}{0.18em}
+\linespread{1.02}
+\raggedbottom
+\pagestyle{fancy}
+\setlength{\headheight}{15pt}
+\fancyhf{}
+\fancyhead[L]{操作系统原理高密度理解讲义}
+\fancyhead[R]{\leftmark}
+\fancyfoot[C]{\thepage/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.25pt}
+\ctexset{
+  chapter = {format = \huge\bfseries},
+  section = {format = \Large\bfseries},
+  subsection = {format = \large\bfseries}
+}
+\titlespacing*{\chapter}{0pt}{-0.6em}{0.8em}
+\titlespacing*{\section}{0pt}{0.55em}{0.22em}
+\titlespacing*{\subsection}{0pt}{0.35em}{0.12em}
+\newlist{points}{enumerate}{2}
+\setlist[points,1]{label=\arabic*. ,leftmargin=2.0em,itemsep=0.06em,topsep=0.06em,parsep=0em,partopsep=0em}
+\setlist[points,2]{label=(\arabic*) ,leftmargin=1.8em,itemsep=0.02em,topsep=0.02em,parsep=0em,partopsep=0em}
+\setlist[itemize]{itemsep=0.04em,topsep=0.04em,parsep=0em,partopsep=0em}
+\setlist[enumerate]{itemsep=0.04em,topsep=0.04em,parsep=0em,partopsep=0em}
+\newcommand{\concept}[1]{\subsection{#1}}
+\newcommand{\key}[1]{\textbf{#1}}
+\newcommand{\term}[1]{\textbf{#1}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\zhushi}[2]{\par\noindent{\kaishu\small #1：#2}\par}
+\newcommand{\plain}[1]{\zhushi{大白话}{#1}}
+\newcommand{\exam}[1]{\zhushi{可能怎么考}{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\title{\bfseries 操作系统原理高密度理解讲义\\\large 按 PPT 顺序：知识点 + 大白话 + 可能怎么考}
+\author{基于课程 PPT、往年试卷与个人 os.docx 辅助记忆整理}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\input{frontmatter}
+\input{chapter1}
+\input{chapter2}
+\input{chapter3}
+\input{chapter4}
+\input{chapter5}
+\input{chapter6}
+\input{chapter7}
+\input{chapter8}
+\input{chapter9}
+\input{chapter10}
+\input{chapter11}
+\input{chapter12}
+\input{chapter13}
+\input{review}
+\end{document}

@@ -1,0 +1,88 @@
+\chapter*{总复习：高频辨析与做题模板}
+\addcontentsline{toc}{chapter}{总复习：高频辨析与做题模板}
+
+\section*{一、概念定位模板}
+\addcontentsline{toc}{section}{一、概念定位模板}
+\begin{points}
+  \item 问 CPU 给谁用：进程调度。
+  \item 问多个进程怎么不抢坏共享变量：同步互斥。
+  \item 问互相等资源卡住：死锁。
+  \item 问地址怎么变、页表、碎片：存储器管理。
+  \item 问缺页、页面置换、抖动：虚拟存储器。
+  \item 问文件名、目录、逻辑结构、访问方法：文件系统接口。
+  \item 问文件块放磁盘哪里、inode、空闲块：文件系统实现。
+  \item 问磁盘臂怎么移动、访问时间：大容量存储。
+  \item 问 DMA、缓冲、SPOOLing、设备分配：设备管理。
+\end{points}
+
+\section*{二、地址转换题模板}
+\addcontentsline{toc}{section}{二、地址转换题模板}
+\begin{points}
+  \item 看页大小/段大小，确定偏移位数或偏移范围。
+  \item 把逻辑地址拆成页号/段号和偏移。
+  \item 查页表/段表，判断是否越界或缺页。
+  \item 拼物理地址：页式为物理块号 + 页内偏移；段式为段基址 + 段内偏移。
+\end{points}
+
+\section*{三、PV 题模板}
+\addcontentsline{toc}{section}{三、PV 题模板}
+\begin{points}
+  \item 找共享资源：需要 mutex 互斥。
+  \item 找先后关系：先发生的一方 V，后发生的一方 P。
+  \item 找数量约束：空缓冲区用 empty，满缓冲区用 full，资源个数就是信号量初值。
+  \item 写顺序：先等条件，再进互斥；先出互斥，再释放条件。
+  \item 检查死锁：有没有拿着 mutex 等待别人改变条件。
+\end{points}
+
+\section*{四、调度题模板}
+\addcontentsline{toc}{section}{四、调度题模板}
+\begin{points}
+  \item 列表：进程、到达时间、服务时间、优先级/队列。
+  \item 找调度点：到达、完成、时间片到、阻塞、抢占、优先级调整。
+  \item 画甘特图。
+  \item 算完成时间、周转时间、等待时间、带权周转时间。
+  \item 抢占式算法每个新进程到达都要判断是否抢占。
+\end{points}
+
+\section*{五、页面置换题模板}
+\addcontentsline{toc}{section}{五、页面置换题模板}
+\begin{points}
+  \item 初始化页框为空，按引用串逐个访问。
+  \item 命中：不计缺页，但更新 LRU/Clock 等状态。
+  \item 缺页：若有空页框直接装入；否则按算法选牺牲页。
+  \item 记录每一步页框内容和缺页次数。
+  \item 判断 Belady：只针对 FIFO 这类算法可能出现，不要泛化到 LRU/OPT。
+\end{points}
+
+\section*{六、文件系统计算题模板}
+\addcontentsline{toc}{section}{六、文件系统计算题模板}
+\begin{points}
+  \item 目录检索题：先算每块可放多少目录项，再算平均需要扫描多少块。
+  \item 索引最大文件题：先算每个索引块可放多少块号，再根据索引级数求可寻址数据块数。
+  \item 链式分配随机访问题：访问第 $k$ 块通常要从头顺链访问到第 $k$ 块。
+  \item 连续分配题：直接定位强，但增长和外部碎片是弱点。
+\end{points}
+
+\section*{七、最后一遍背诵关键词}
+\addcontentsline{toc}{section}{七、最后一遍背诵关键词}
+\begin{multicols}{2}
+\begin{points}
+  \item OS：资源管理器、控制程序、接口。
+  \item 四特征：并发、共享、虚拟、异步。
+  \item 接口：命令接口、程序接口、图形接口。
+  \item 进程：程序一次执行，PCB 是唯一标志。
+  \item 线程：CPU 调度基本单位，共享进程资源。
+  \item 调度：高级进系统，中级进内存，低级上 CPU。
+  \item 临界区：空闲让进、忙则等待、有限等待、让权等待。
+  \item 信号量：P 先减，V 先加。
+  \item 死锁：互斥、请求保持、不可剥夺、循环等待。
+  \item 分页：逻辑连续、物理离散、页表映射。
+  \item 分段：按逻辑结构，便于共享保护。
+  \item 虚存：局部性、请求调入、页面置换。
+  \item 抖动：缺页太多，系统忙于换页。
+  \item 文件：命名信息项序列，目录用于检索。
+  \item inode：文件元数据和块指针。
+  \item 磁盘：寻道 + 旋转延迟 + 传输。
+  \item I/O：DMA、通道、缓冲、SPOOLing。
+\end{points}
+\end{multicols}
